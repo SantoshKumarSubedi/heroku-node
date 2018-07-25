@@ -1,7 +1,7 @@
 var app=require('express')();
 var http=require('http').Server(app);
 var io = require('socket.io')(http);
-var uuid=require('node-uuid');
+var uuid=require('uuid');
 var clients=[];
 app.get('/',function(req,res){
   res.sendFile(__dirname+'/index.html');
