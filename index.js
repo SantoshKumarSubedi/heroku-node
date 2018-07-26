@@ -16,11 +16,27 @@ clients.push({"id":client_uuid,"ws":socket,"nickname":nickname});
 io.emit('chat message',nickname+" is connected");
 updateuser();
 socket.on('chat message',function(msg){
+  var command=msg.split(";;");
+  if(command[0]=="nick"){
+    if(command.length>=2){
+      var old_nickname=nickname;
+      nickname=nickname=command[1];
+      io.emit('chat message',"user "+old_nickname+" change nickname to "+nickname);
+      for(i=0;i<clients.length;i++){
+
+        if(clients[i].id==client_uuid){
+          clients[i].nickname=nickname;
+        }
+      }
+      updateuser();
+    }
+  }else{
   for(i=0;i<clients.length;i++){
     var client_socket=clients[i].ws;
     if(client_socket!=socket){
       client_socket.emit('chat message',nickname+">"+msg);
     }
+  }
 }
 });
 
