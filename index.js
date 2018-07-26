@@ -18,11 +18,9 @@ updateuser();
 socket.on('chat message',function(msg){
   for(i=0;i<clients.length;i++){
     var client_socket=clients[i].ws;
-    if(client_socket==socket){
-      client_socket.emit('chat message',"me>"+msg);
-    }else{
-    client_socket.emit('chat message',nickname+">"+msg);
-  }
+    if(client_socket!=socket){
+      client_socket.emit('chat message',nickname+">"+msg);
+    }
 }
 });
 
