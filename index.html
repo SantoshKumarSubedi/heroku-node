@@ -1,39 +1,134 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-    <script src="/socket.io/socket.io.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Let's Chat</title>
+
+<style >
+body{
+background-color: #2E2C1F;
+}
+section{
+  height:500px;
+  width: 100%;
+
+}
+.main{
+width: 100%;
+height: 100%;
+display: flex;
+}
+#left{
+  background-color: #545244;
+  height:100%;
+  flex: 3;
+}
+#message{
+  text-align: left;
+
+}
+#self{
+  text-align: right;
+
+}
+#right{
+flex: 1;
+  height: inherit;
+}
+#right{
+  display: flex;
+  flex-direction: column;
+  background: grey;
+}
+#top{
+  flex: 1;
+  background-color: #908B73;
+}
+#bottom{
+  flex:1;
+}
+
+input{
+  width:69%;
+  padding: 10px;
+}
+button{
+  margin-left: 4px;
+
+  padding:10px;
+}
+
+#self span{
+  background-color: white;
+  padding: 4px;
+  border-radius: 15%;
+  opacity: 0.8;
+  margin-right: 5px;
+}
+ul{
+  list-style: none;
+}
+#list li{
+  background: green;
+  opacity: 0.5;
+  margin-top: 2px;
+}
+</style>
+<script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
 $(function(){
 var socket = io();
 $('form').submit(function(){
   socket.emit('chat message',$('#m').val());
+  var msg=$('#m').val();
+    $('#left').append($('<p>').attr('id',"self").append($('<span>').text(msg)));
+  $('#m').val('');
   return false;
 });
 socket.on('chat message',function(msg){
-  $('#messages').append($('<li>').text(msg));
-  $('#m').val('');
+  $('#left').append($('<p>').attr('id',"message").text(msg));
+});
+socket.on('useractivity',function(msg){
+  var data=JSON.parse(msg);
+  $('#list').empty();
+for(var i in data){
+  $('#list').append($('<li>').text(data[i].user));
+}
+
+
 });
 });
 
 
     </script>
-  </head>
-  <body>
-    <ul id="messages"></ul>
+</head>
+<body>
+  <section>
+<div class="main">
+  <div id="left">
+
+  </div>
+      <div id="right">
+        <div id="top">
+          <p> ACTIVE USERS</P>
+          <ul id="list">
+
+          </ul>
+        </div>
+        <div id="bottom">
+          <p>COMMANDS</p>
+          <ul id="commands">
+            <li>NO COMMANDS ARE IMPLEMENTED YET</li>
+          </ul>
+        </div>
+      </div>
+</div>
+<div>
+  <form action="">
+  <input type="text" autocomplete="off" id="m"><button>send</button>
     <form>
-      <input id="m" autocomplete="off" /><button type="submit"">Send</button>
-    </form>
-  </body>
+</div>
+</section>
+</body>
 </html>
