@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "description": "my first chat application",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.15.2",
+    "pg": "^7.4.3",
     "socket.io": "^2.1.1",
+    "string": "^3.3.3",
     "uuid": "^3.3.2"
   }
 }
