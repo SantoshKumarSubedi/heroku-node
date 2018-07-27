@@ -91,8 +91,8 @@ if(flag==1){
 io.on('connection',function(socket){
   console.log("client connected");
 var client_uuid=uuid.v4();
-var nickname=client_uuid.substr(0,8);
-clients.push({"id":client_uuid,"ws":socket,"nickname":currentclient});
+var nickname=currentclient;
+clients.push({"id":client_uuid,"ws":socket,"nickname":nickname});
 io.emit('chat message',nickname+" is connected");
 updateuser();
 socket.on('chat message',function(msg){
