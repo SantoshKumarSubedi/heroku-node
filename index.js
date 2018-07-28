@@ -30,6 +30,7 @@ app.get("/",function(req,res){
 app.get("/login",function(req,res){
   res.sendFile(__dirname+'/login.html');
 });
+
 app.post("/signup",function(req,res){
   var email = req.body.email.toUpperCase();
   var username = req.body.username.toUpperCase();
@@ -47,9 +48,11 @@ app.post("/signup",function(req,res){
     });
   });
 });
+
 app.get("/signup",function(req,res){
   res.sendFile(__dirname+'/signup.html')
 });
+
 app.post("/submit",function(req,res){
   flag=0;
 var username=req.body.username.toUpperCase();
@@ -120,7 +123,7 @@ socket.on('chat message',function(msg){
 }
 });
 
-socket.on('disconnect',function(ev){
+socket.on('disconncet',function(ev){
     for(var i=0;i<clients.length;i++){
       if(clients[i].id==client_uuid){
         console.log('client [%s] disconnected',nickname);
@@ -130,7 +133,6 @@ socket.on('disconnect',function(ev){
     }
     io.emit("chat message",nickname+"is disconnected");
   });
-
 });
 http.listen(process.env.PORT||8080,function(){
   console.log('listening on *:3000');
@@ -139,8 +141,8 @@ function updateuser(){
   var client=[];
   for(var i=0;i<clients.length;i++){
     client.push({"user":clients[i].nickname});
-
 }
+
 console.log(client);
 io.emit("useractivity",JSON.stringify(client));
 }
