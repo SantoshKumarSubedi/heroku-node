@@ -1,133 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Let's Chat</title>
+	<meta charset="utf-8">
+	<title>Let's Chat</title>
+	<link href='https://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#aboutUs").click(function(){
+				$("#aboutAll").fadeIn();
+			});
+			$("#close").click(function(){
+				$("#aboutAll").fadeOut();
+			});
+			$("#menu").click(function(){
+				$(".firstSection").fadeToggle();
+				$("#sendMessage").css("width", "21%");
+			});
+		});
+	</script>
 
-<style >
-body{
-background-color: #2E2C1F;
-}
-section{
-  height:500px;
-  width: 100%;
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script>
+	$(function(){
+	var socket = io();
+	$('form').submit(function(){
+	  socket.emit('chat message',$('#m').val());
+	  var msg=$('#m').val();
+	  $('#m').val('');
+	  return false;
+	});
+	socket.on('selfmessage',function(msg){
+	  var data=JSON.parse(msg);
+	  $('#left').append($('<p>').attr("id","self").append($('<span>').attr('id',"message").text(data.message)).append($('<span>').attr('id',"username").text(data.nickname)));
+	});
+	socket.on('chat message',function(msg){
+	  var data=JSON.parse(msg);
+	  $('#left').append($('<p>').append($('<span>').attr('id',"username").text(data.nickname)).append($('<span>').attr('id',"message").text(data.message)));
+	});
+	socket.on('userconnected',function(msg){
+	  var data=JSON.parse(msg);
+	  $('#left').append($('<p>').append($('<span>').attr('id',"username").text(data.nickname)).append($('<span>').attr('id',"message").text(data.message)));
 
-}
-.main{
-width: 100%;
-height: 100%;
-display: flex;
-}
-#left{
-  background-color: #545244;
-  height:100%;
-  flex: 3;
-}
-#message{
-  text-align: left;
-
-}
-#self{
-  text-align: right;
-
-}
-#right{
-flex: 1;
-  height: inherit;
-}
-#right{
-  display: flex;
-  flex-direction: column;
-  background: grey;
-}
-#top{
-  flex: 1;
-  background-color: #908B73;
-}
-#bottom{
-  flex:1;
-}
-
-input{
-  width:69%;
-  padding: 10px;
-}
-button{
-  margin-left: 4px;
-
-  padding:10px;
-}
-
-#self span{
-  background-color: white;
-  padding: 4px;
-  border-radius: 15%;
-  opacity: 0.8;
-  margin-right: 5px;
-}
-ul{
-  list-style: none;
-}
-#list li{
-  background: green;
-  opacity: 0.5;
-  margin-top: 2px;
-}
-</style>
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-$(function(){
-var socket = io();
-$('form').submit(function(){
-  socket.emit('chat message',$('#m').val());
-  var msg=$('#m').val();
-    $('#left').append($('<p>').attr('id',"self").append($('<span>').text(msg)));
-  $('#m').val('');
-  return false;
-});
-socket.on('chat message',function(msg){
-  $('#left').append($('<p>').attr('id',"message").text(msg));
-});
-socket.on('useractivity',function(msg){
-  var data=JSON.parse(msg);
-  $('#list').empty();
-for(var i in data){
-  $('#list').append($('<li>').text(data[i].user));
-}
-});
-});
+	});
+	socket.on('useractivity',function(msg){
+	  var data=JSON.parse(msg);
+	  $('#list').empty();
+	for(var i in data){
+	  $('#list').append($('<li>').text(data[i].user));
+	}
+	});
+	socket.on('errors',function(msg){
+	  var data=JSON.parse(msg);
+	  $('#left').append($('<p>').attr("id","self").append($('<span>').attr('id',"message").text(data.message)).append($('<span>').attr('id',"error").text(data.status)));
+	});
+	});
 
 
-    </script>
+	    </script>
+
+	<style type="text/css">
+		*{
+			box-sizing: border-box;
+		}
+		h3{
+			text-decoration: underline;
+		}
+		body{
+			margin: 0;
+			padding: 0;
+		}
+		header{
+			width: 100%;
+			font-family: 'Aldrich';
+			font-size: 35px;
+			background: rgb(36,36,255);
+			text-align: center;
+			padding: 1%;
+			font-size: 30px;
+			box-shadow: 3px 5px 5px black;
+			color: white;
+			font-weight: bolder;
+		}
+		section{
+			display: flex;
+			flex-direction: row;
+
+			background: grey;
+		}
+		.firstSection{
+			height: 100%;
+			text-align: center;
+			font-family: 'Acme';
+		}
+		#activeUsers{
+			color: white;
+			position: relative;
+			width: 270px;
+			height: 350px;
+			background: black;
+			border:2px solid grey;
+			overflow: auto;
+		}
+		#shortcut{
+			color: white;
+			position: relative;
+			width: 100%;
+			height: 160px;
+			background: black;
+			border: 2px solid grey;
+		}
+		#shortcut ul{
+			text-align: left;
+		}
+		#aboutUs{
+			background: blue;
+			color: white;
+			padding: 4%;
+			border: 2px solid grey;
+			cursor: pointer;
+		}
+		#aboutUs:hover{
+			background: rgb(36,36,255);
+		}
+		#logout{
+			background: blue;
+			color: white;
+			padding: 2%;
+			border: 2px solid grey;
+			cursor: pointer;
+		}
+		#logout:hover{
+			background: rgb(36,36,255);
+		}
+		.chatSection{
+			position: relative;
+			width: 80%;
+			height: 585px;
+			background: black;
+			background: url('back.jpeg');
+		}
+
+		#left{
+			height: 545px;
+
+			overflow: auto;
+		}
+		#m{
+			width: 94%;
+			height: 40px;
+			padding: 1%;
+			border: 2px solid black;
+		}
+		#m:hover{
+			box-shadow: 3px 3px 3px black;
+		}
+		#sendMessage{
+			width: 5%;
+			height: 40px;
+			border: 3px solid black;
+			border-radius: 5%;
+			cursor: pointer;
+		}
+		#sendMessage:hover{
+			box-shadow: 3px 3px 3px black;
+		}
+		#aboutAll{
+			display: none;
+			position: absolute;
+			width: 18%;
+			height: 100%;
+			top:0;
+			left: 0;
+			background: rgb(196,196,196);
+			border: 5px dashed black;
+			font-size: 20px;
+		}
+		#close{
+			margin-top: 40px;
+			cursor: pointer;
+			font-family: 'Acme';
+			padding: 2%;
+			background: blue;
+		}
+		#close:hover{
+			background: rgb(36,36,255);
+			color: white;
+		}
+
+		#username{
+		padding:4px;
+		background-color: green;
+		color:white;
+		}
+		#message{
+		padding: 4px;
+		background-color:white;
+
+		}
+		#error{
+			padding: 4px;
+			background-color: red;
+			color: white;
+		}
+		ul{
+			list-style: none;
+		}
+		#list li{
+			background: green;
+			opacity: 0.5;
+			margin-top: 2px;
+		}
+		#self{
+			text-align: right;
+		}
+
+		@media only screen and (max-width: 1000px) {
+			header{
+				background: blue;
+			}
+			#menu{
+				margin:15px;
+				cursor: pointer;
+			}
+			.menuItem{
+				width: 20px;
+				height: 3px ;
+				background: black;
+				margin-bottom: 3px;
+			}
+			.firstSection{
+				display: none;
+				position: relative;
+
+			}
+			.chatSection{
+				width: 100%;
+				height: 555px;
+			}
+			#left{
+				height: 511px;
+			}
+			#m{
+				width: 75%;
+			}
+			#sendMessage{
+				width: 15%;
+			}
+			#activeUsers{
+				width: 200px;
+			}
+			#aboutAll{
+				width: 90%;
+			}
+
+
+
+		}
+	</style>
 </head>
 <body>
-  <section>
-<div class="main">
-  <div id="left">
-
-  </div>
-      <div id="right">
-        <div id="top">
-          <p> ACTIVE USERS</P>
-          <ul id="list">
-
-          </ul>
-        </div>
-        <div id="bottom">
-          <p>COMMANDS</p>
-          <ul id="commands">
-            <li>nick</li>
-          </ul>
-          <p>ps:command syntax <i>nick;;sojo_kto_moh123<i></p>
-        </div>
-      </div>
-</div>
-<div>
-  <form action="">
-  <input type="text" autocomplete="off" id="m"><button>send</button>
-    <form>
-</div>
-</section>
+	<header>
+		<div id="menu">
+				<div class="menuItem"></div>
+				<div class="menuItem"></div>
+				<div class="menuItem"></div>
+			</div>
+		अरू भन
+	</header>
+	<section>
+		<div class="firstSection">
+			<div id="activeUsers">
+				<h3>ACTIVE USERS</h3>
+				<ul id="list"></ul>
+			</div>
+			<div id="shortcut">
+				<h3>SHORTCUT KEYS</h3>
+				<ul>
+					<li>ps:command syntax</li>
+					<li>pm;;username;;message</li>
+					<li>report;;username</li>
+				</ul>
+			</div>
+			<div id="aboutUs">About Us</div>
+			<div id="aboutAll">
+				Version: 1.1.1<br>
+				Developer Team: CodePoets
+				<div id="close">Close</div>
+			</div>
+			<div id="logout">Logout</div>
+		</div>
+		<div class="chatSection">
+			<div id="left"></div>
+			<div>
+				<form action="" method="POST">
+				<input type="text" name="text" id="m" placeholder="Enter Message">
+				<button id="sendMessage">Send</button>
+			</form>
+			</div>
+		</div>
+	</section>
 </body>
 </html>

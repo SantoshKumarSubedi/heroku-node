@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Let's Chat</title>
+
+<style >
+body{
+background-color: #2E2C1F;
+}
+section{
+  height:500px;
+  width: 100%;
+
+}
+.main{
+width: 100%;
+height: 100%;
+display: flex;
+}
+#left{
+  background-color: #545244;
+  height:100%;
+  flex: 3;
+}
+#message{
+  text-align: left;
+
+}
+#self{
+  text-align: right;
+
+}
+#right{
+flex: 1;
+  height: inherit;
+}
+#right{
+  display: flex;
+  flex-direction: column;
+  background: grey;
+}
+#top{
+  flex: 1;
+  background-color: #908B73;
+}
+#bottom{
+  flex:1;
+}
+#username{
+padding:4px;
+background-color: green;
+color:white;
+}
+#message{
+padding: 4px;
+background-color:white;
+
+}
+
+#error{
+  padding: 4px;
+  background-color: red;
+  color: white;
+}
+input{
+  width:69%;
+  padding: 10px;
+}
+button{
+  margin-left: 4px;
+
+  padding:10px;
+}
+
+ul{
+  list-style: none;
+}
+#list li{
+  background: green;
+  opacity: 0.5;
+  margin-top: 2px;
+}
+</style>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+$(function(){
+var socket = io();
+$('form').submit(function(){
+  socket.emit('chat message',$('#m').val());
+  var msg=$('#m').val();
+  $('#m').val('');
+  return false;
+});
+socket.on('selfmessage',function(msg){
+  var data=JSON.parse(msg);
+  $('#left').append($('<p>').attr("id","self").append($('<span>').attr('id',"message").text(data.message)).append($('<span>').attr('id',"username").text(data.nickname)));
+});
+socket.on('chat message',function(msg){
+  var data=JSON.parse(msg);
+  $('#left').append($('<p>').append($('<span>').attr('id',"username").text(data.nickname)).append($('<span>').attr('id',"message").text(data.message)));
+});
+socket.on('userconnected',function(msg){
+  var data=JSON.parse(msg);
+  $('#left').append($('<p>').append($('<span>').attr('id',"username").text(data.nickname)).append($('<span>').attr('id',"message").text(data.message)));
+
+});
+socket.on('useractivity',function(msg){
+  var data=JSON.parse(msg);
+  $('#list').empty();
+for(var i in data){
+  $('#list').append($('<li>').text(data[i].user));
+}
+});
+socket.on('errors',function(msg){
+  var data=JSON.parse(msg);
+  $('#left').append($('<p>').attr("id","self").append($('<span>').attr('id',"message").text(data.message)).append($('<span>').attr('id',"error").text(data.status)));
+});
+});
+
+
+    </script>
+</head>
+<body>
+  <section>
+<div class="main">
+  <div id="left">
+
+  </div>
+      <div id="right">
+        <div id="top">
+          <p> ACTIVE USERS</P>
+          <ul id="list">
+
+          </ul>
+        </div>
+        <div id="bottom">
+          <p>COMMANDS</p>
+          <ul id="commands">
+            <li>nick</li>
+          </ul>
+          <p>ps:command syntax <i>nick;;sojo_kto_moh123<i></p>
+        </div>
+      </div>
+</div>
+<div>
+  <form action="">
+  <input type="text" autocomplete="off" id="m"><button>send</button>
+    <form>
+</div>
+</section>
+</body>
+</html>

@@ -1,17 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>login</title>
+  <meta charset="utf-8">
+  <title>Aru Vana Login Gara</title>
+  <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  body
+  {
+    background-image:url("back1.jpg");
+    text-align: center;
+  }
+  .main
+  {
+    padding: 1%;
+    opacity: 0.7;
+    height:auto;
+    align-items: center;
+    margin-left:15%;
+    margin-right:15%;
+    margin-top:5%;
+    background-color:#FFC60E;
+    margin-top:3%;
+    border-radius: 50px;
+    box-shadow: 2px 2px 2px black;
+  }
+  .talla_ko
+  {
+    margin-left: 5%;
+  }
+  .euta{
+    font-family: 'Acme';
+    font-size: 20px;
+    margin:1%;
+    width:50%;
+    border: 0px;
+    border-bottom: 3px solid black;
+    background: inherit;
+  }
+  .dosro
+  {
+    margin:0.5%;
+    border: 2px solid black;
+    padding: 1%;
+    cursor: pointer;
+    font-family: 'Aldrich';
+  }
+  .dosro:hover{
+    box-shadow: 3px 3px 3px black;
+  }
+  .logo{
+    border-radius: 50%;
+  }
+  h5{
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Aldrich';
+  }
+  @media only screen and (max-width: 600px) {
+
+  }
+  </style>
 </head>
 <body>
-  <h1> login form </h1>
-<form action="/submit" method="POST">
-<label>username</label>
-<input type="text" name="username" id="username" placeholder="username">
-<label>password</label>
-<input type="password" name="password" id="password" placeholder="*******">
-<button>Submit</button>
-<a href="signup">Signup</a>
-</form>
+  <header>
+    <h1> अरू भन </h1>
+  </header>
+  <div class="main">
+    <div class="logo">
+      <img class="logo" src="logo.png" alt="logo">
+    </div>
+    <div class = "talla_ko">
+      <form action="/submit" method="post">
+      <input class="euta" type="text" placeholder="Username" name="username"><br>
+      <input class="euta" type="password" placeholder="Password" name="password"><br>
+      <button class="dosro" type="submit">Chat now</button><br>
+    </form>
+      <h5>Don't have an account?? Dont worry, create One now ! </h5>
+      <a href="signup"><input class="dosro" type="submit" value="Create Account"></a><br>
+    </div>
+  </div>
 </body>
 </html>
