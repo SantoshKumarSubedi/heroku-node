@@ -59,7 +59,9 @@
 	  $('#left').append($('<p>').attr("id","self").append($('<span>').attr('id',"message").text(data.message)).append($('<span>').attr('id',"error").text(data.status)));
 	});
 	});
-
+	$("#logout").click(function(){
+		socket.emit("logout");
+	});
 
 	    </script>
 
@@ -292,7 +294,7 @@
 				Developer Team: CodePoets
 				<div id="close">Close</div>
 			</div>
-			<div id="logout">Logout</div>
+			<div id="logout"><a herf="logout">Logout</a></div>
 		</div>
 		<div class="chatSection">
 			<div id="left"></div>

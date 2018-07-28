@@ -71,6 +71,10 @@ app.get("/back.jpeg",function(req,res){
   res.sendFile(__dirname+'/back.jpg')
 });
 
+app.get("/logout",function(req,res){
+  res.sendFile(__dirname+'/login.html')
+});
+
 app.post("/submit",function(req,res){
   flag=0;
 var username=req.body.username.toUpperCase();
@@ -107,7 +111,7 @@ if(flag==1){
   console.log('yes');
   res.sendFile(__dirname+"/index.html");
 }else{
-  res.sendFile(__dirname+"/login.html");  
+  res.sendFile(__dirname+"/login.html");
 }
 }else{
   console.log('noooo');
@@ -197,6 +201,10 @@ if(command[0]=="pm"){
     }
   }
 }
+socket.on('logout',function(mgg){
+  socket.disconnect();
+
+});
 });
 
 socket.on('disconnect',function(ev){
@@ -210,6 +218,7 @@ socket.on('disconnect',function(ev){
     io.emit("chat message",nickname+"is disconnected");
   });
 });
+
 http.listen(process.env.PORT||8080,function(){
   console.log('listening on *:3000');
 });
