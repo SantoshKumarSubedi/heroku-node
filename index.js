@@ -97,11 +97,21 @@ for(var i=0;i<result.rows.length;i++){
   }
 }
 if(flag==1){
+  var a=0
+  for(var i=0;i<clients.length;i++){
+    if(username==clients[i].nickname){
+      a=1;
+    }
+  }
+  if(a==0){
   console.log('yes');
   res.sendFile(__dirname+"/index.html");
 }else{
+  res.sendFile(__dirname+"/login.html");  
+}
+}else{
   console.log('noooo');
-  res.sendFile(__dirname+"/login.html");
+
 }
 
   });
