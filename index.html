@@ -45,8 +45,12 @@
 	socket.on('userconnected',function(msg){
 	  var data=JSON.parse(msg);
 	  $('#left').append($('<p>').append($('<span>').attr('id',"username").text(data.nickname)).append($('<span>').attr('id',"message").text(data.message)));
-
 	});
+	socket.on('personal message',function(msg){
+		var data=json.parse(msg);
+		 $('#left').append($('<p>').append($('<span>').attr('id',"username").text(data.nickname)).append($('<span>').attr('id',"pm").text(data.pm)).append($('<span>').attr('id',"message").text(data.message)));
+
+	})
 	socket.on('useractivity',function(msg){
 	  var data=JSON.parse(msg);
 	  $('#list').empty();

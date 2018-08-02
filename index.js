@@ -142,7 +142,7 @@ if(command[0]=="pm"){
         if(clients[i].nickname==pm_to){
           console.log("username found")
           var client_socket=clients[i].ws;
-          client_socket.emit('chat message',JSON.stringify({'nickname':nickname,"message":command[2]}));
+          client_socket.emit('personal message',JSON.stringify({'nickname':nickname,'pm':"send you a personal message:","message":command[2]}));
           feedback="sent"
         }
       }
