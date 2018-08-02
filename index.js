@@ -1,7 +1,7 @@
 var express=require('express');
 var app=express();
 var http=require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('soc.0ket.io')(http);
 var uuid=require('uuid');
 var bodyparser = require('body-parser');
 var str=require('string');
@@ -79,7 +79,6 @@ app.post("/submit",function(req,res){
   flag=0;
 var username=req.body.username.toUpperCase();
 var password=req.body.password;
-console.log("client provided user and pass"+username+":"+password);
 pool.connect(function(err,client,done){
   if(err){
     return console.error('error fetching client from pool',err);
@@ -93,11 +92,11 @@ for(var i=0;i<result.rows.length;i++){
 
   var uname=result.rows[i].username.toString().trim();
   var pass=result.rows[i].password.toString().trim();
-  console.log(uname+":"+pass);
+
   if(uname===username&&pass===password){
     flag=1;
     currentclient=uname;
-    console.log(flag)
+
   }
 }
 if(flag==1){
@@ -108,13 +107,13 @@ if(flag==1){
     }
   }
   if(a==0){
-  console.log('yes');
+
   res.sendFile(__dirname+"/index.html");
 }else{
   res.sendFile(__dirname+"/login.html");
 }
 }else{
-  console.log('noooo');
+
 
 }
 
